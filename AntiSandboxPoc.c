@@ -6,16 +6,14 @@ int snadboxCPU()
 {
 	int cpu_inf[4] = { 0 };
 
-
 	__cpuid(cpu_inf, 1);
 
 	if ((cpu_inf[2] >> 31) & 1)
 	{
 		return 1;
 	}
-
-	return 0;
     
+	return 0;
 }
 
 int LowRam()
@@ -31,21 +29,21 @@ int LowRam()
 	{
 		return 1;
 	}
+	
 	return 0;
-
 }
 
-int is_low_cores() {
+int lowCores() 
+{
 	SYSTEM_INFO sys_info;
-
 	
 	GetSystemInfo(&sys_info);
 
-	
 	if (sys_info.dwNumberOfProcessors < 4) {
 		return 1; 
 	}
-	return 0; 
+	
+	return 0;
 }
 
 int SandBoxUserName()
@@ -65,8 +63,8 @@ int SandBoxUserName()
 	return 0;
 }
 
-int check_vm_drivers() {
-	
+int check_vm_drivers() 
+{
 	const char* drivers[] = 
 	{
 	"C:\\Windows\\System32\\sbiedll.dll",      
@@ -82,40 +80,36 @@ int check_vm_drivers() {
 			return 1; 
 		}
 	}
+
 	return 0;
 }
 
-int is_mouse_dead() {
+int dead_mouse() 
+{
 	POINT pos1, pos2;
 
-	
 	GetCursorPos(&pos1);
 
-	
 	Sleep(10000);
 
-	
 	GetCursorPos(&pos2);
 
-	
-	if (pos1.x == pos2.x && pos1.y == pos2.y) {
+	if (pos1.x == pos2.x && pos1.y == pos2.y) 
+	{
 		return 1; 
 	}
 
-	return 0; 
+	return 0;
 }
-
-
 
 int main()
 {
-	if (SandBoxUserName() || check_vm_drivers() || is_mouse_dead() ||
-		(snadboxCPU() && (LowRam() || is_low_cores())))
-	{
 
+	if (SandBoxUserName() || check_vm_drivers() || dead_mouse() ||
+		(snadboxCPU() && (LowRam() || lowCores())))
+	{
 		return 0;
 	}
-
 
 	// your code
 }
